@@ -45,11 +45,31 @@ These aren't toy environments. They're built from:
 
 The observation spaces match what an operator actually sees (teach pendant displays, HMI screens, diagnostic buffers). The action spaces match what an operator actually does (button presses, parameter edits, program modifications).
 
-## Source Repos
+## Source Repos — Proprietary Data (VM-Extracted)
 
-| Repo | Data | Emulators |
+| Repo | Data | Key Moat Assets |
 |---|---|---|
-| [fanuc-robots](https://github.com/canyon-tractian/fanuc-robots) | 289 robots, KAREL/TP data, 719K words docs | Robot emulator + KAREL/TP interpreter + gym |
-| [abb-robots](https://github.com/canyon-tractian/abb-robots) | 1,074 models, dynamics, 8,680 meshes | Robot emulator + RAPID interpreter + gym |
-| [omron-plc](https://github.com/canyon-tractian/omron-plc) | 452 instructions, 3.24M words docs | PLC emulator + gym |
-| [siemens-plc](https://github.com/canyon-tractian/siemens-plc) | 367 MB data, 6.6M words docs | PLC emulator + STL/SCL compilers + gym |
+| [fanuc-robots](https://github.com/canyon-tractian/fanuc-robots) | 50MB, 30 JSON, 6,894 raw programs | 6,980 system vars, 269 builtins, 2,133 TP programs, 39,276 instructions |
+| [abb-robots](https://github.com/canyon-tractian/abb-robots) | 34MB, 78 JSON | 1,458 drive params, 1,074 robot models, dynamics |
+| [omron-plc](https://github.com/canyon-tractian/omron-plc) | 85MB, 25 JSON | **21,314 drive params**, 5,554 devices, 191 error codes, 492 EDS devices |
+| [siemens-plc](https://github.com/canyon-tractian/siemens-plc) | 420MB+, 48 JSON | **2,114 SINAMICS params**, 5,869 TIA diagnostics, 13 GSDML profiles |
+| [schneider-data](https://github.com/canyon-tractian/schneider-data) | 14MB, 20 JSON | 22,669 VFD params across 17 products |
+| [kuka-data](https://github.com/canyon-tractian/kuka-data) | 2MB, 10 JSON | WorkVisual machine data, drive configs, robot catalog |
+
+## Quarantined Repos — Web-Sourced (NOT Moat)
+
+| Repo | Data | Notes |
+|---|---|---|
+| [public-docs-quarantine](https://github.com/canyon-tractian/public-docs-quarantine) | Rockwell, Mitsubishi, KUKA KRL | Web research — SOTA gets 85%+ on this |
+| [rockwell-data](https://github.com/canyon-tractian/rockwell-data) | 223 instructions, 47 CIP objects | Public Logix 5000 docs |
+| [mitsubishi-data](https://github.com/canyon-tractian/mitsubishi-data) | 400+ MELSEC instructions | Public GX Works docs |
+
+## Benchmark Moat — Drive Parameter Recall
+
+| Vendor | Parameters | SOTA Accuracy | Source |
+|---|---|---|---|
+| Schneider ATV71/ATV340 | 22,669 | ~60% fail on long-tail | DTM exports |
+| OMRON 3G3/MX2/R88 | 21,314 | **0% for servo addresses** | CX-Drive VM |
+| SINAMICS G120/S120 | 2,114 | ~60% fail on long-tail | TIA Portal VM |
+| ABB ACS880 | 1,458 | ~60% fail on long-tail | Drive Composer |
+| **Total** | **47,555** | | |
