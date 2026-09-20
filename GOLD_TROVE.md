@@ -14,10 +14,11 @@ SOTA accuracy on long-tail VFD parameter addresses: **~40%**. Servo drive addres
 
 | Vendor | Product(s) | Parameters | Modbus Addrs | Source | Repo |
 |--------|-----------|-----------|-------------|--------|------|
+| **WEG** | **CFW/CVW/MVW/SSW/SCA/SIW/BIW/PLC + 40 more families** | **282,713** | **282,705** | **WPS v3.21 update server (748 NBM XMLs)** | **[weg-drives-data](https://github.com/canyon-tractian/weg-drives-data)** |
 | Schneider | ATV12/31/32/61/71/340, ATS22/48/480/490, Lexium28/32A/C/M/i | **22,669** | 18,392 | 17 DTM XML exports (SoMove) | [schneider-data](https://github.com/canyon-tractian/schneider-data) |
 | OMRON | 3G3MX2, 3G3RX2, R88D-1SN, R88D-KN, MX2 | **21,314** | field-level | CX-Drive VM extraction | [omron-plc](https://github.com/canyon-tractian/omron-plc) |
 | ABB | ACS880-01 (firmware AINF6 v1.80) | **1,458** | 1,437 | DemoDrive.dcparams (Drive Composer) | [abb-drives-data](https://github.com/canyon-tractian/abb-drives-data) |
-| **Total** | **24 products** | **45,441** | **~20,000** | | |
+| **Total** | **642+ products** | **328,154** | **~303,000** | | |
 
 ### Schneider Detail (22,669 params)
 - 17 products: ATV340 (3,722), ATV71 (2,579), ATV61 (2,535), ATV32 (2,419), ATVLift (2,399), ATS490 (1,972), ATS480 (1,553), Lexium28 (759), Lexium32i (759), Lexium32M (732), Lexium32A (670), Lexium32C (667), ATV12 (641), ATV31 (489), ATV212 (397), ATS48 (276), ATS22 (100)
@@ -33,6 +34,16 @@ SOTA accuracy on long-tail VFD parameter addresses: **~40%**. Servo drive addres
 - Group 73 (safety): genuinely unavailable offline (requires live FSO module)
 - 2,792 FSO safety/fault codes, 142 CANopen objects, 856 OPC data points
 - Audit: **CLEANED** — 5 hallucinated files removed (fake fieldbus/safety/DTC/macro/fault codes), 9 files verified
+
+### WEG Detail (282,713 params — LARGEST DATASET)
+- **618 products** across 40+ families: VFDs (CFW100/300/320/500/501/503/600/700/701/900), HVAC drives (CVW250/400/500/800/900), medium voltage (MVW01/3000), soft starters (SSW06/07/08/7000/900), servo (SCA06/700), solar inverters (SIW600/610/700/750), battery (BIW610/750/800), PLCs (PLC200/201/300/310), remote I/O (RUW100/200), protection relays (PSRW/SPRW), IoT gateways (W30Smart), LED drivers, welding controllers, power meters, EV chargers, and more
+- **748 firmware versions** across all products (multi-version tracking per product)
+- **282,705 Modbus addresses** (99.997% coverage)
+- **58,271 enum-type parameters** with full option labels and 4-language translations (pt/es/en/fr)
+- Source: WPS (WEG Parameter Studio) v3.21 NBM extension packages from `updates.weg.net/wps/321/`
+- Bug fixed Sep 20: enum parameter descriptions were set to first enum label; re-extracted from source XMLs
+- 97 CANopen EDS device profiles in `raw/eds/`
+- Audit: **CLEANED** — enum description bug fixed (58,247 params corrected), re-extracted from verified source XMLs
 
 ### OMRON Detail (21,314 params)
 - CX-Drive parameter databases across 5 drive families
