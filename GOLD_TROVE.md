@@ -187,7 +187,9 @@ SOTA accuracy on long-tail VFD parameter addresses: **~40%**. Servo drive addres
 | Schneider | 17 | 22,669 | 18,392 | 1,953 | 1,703 |
 | OMRON | 5 | 21,314 | ✓ | ✓ | 191 |
 | ABB | 1 | 1,458 | 1,437 | 514 | 2,792 (FSO) |
-| **Total** | **23** | **45,441** | | | **4,686** |
+| WEG | 618 | 282,713 | 282,705 | 58,271 | 121 |
+| Rockwell | 28 families | 24,041 | — | — | — |
+| **Total** | **669+** | **352,195** | | | **4,807** |
 
 ### Robot Kinematics by Vendor
 | Vendor | Models | DH Params | Joint Limits | Payload Data | Motor Specs |
@@ -248,16 +250,34 @@ SOTA accuracy on long-tail VFD parameter addresses: **~40%**. Servo drive addres
 
 ---
 
+## 6.5. Emulator Building Blocks
+
+**NEW**: Consolidated building blocks repo for SFT/RL gym construction: [`emulator-building-blocks`](https://github.com/canyon-tractian/emulator-building-blocks)
+
+| Category | Files | Size | Key Contents |
+|----------|-------|------|--------------|
+| VFD Drives | 10 | 1.4 MB | State machines (5 vendors), CMD/ETA bit defs, Modbus registers, 4,616 fault codes |
+| Siemens PLC | 6 | 2.5 MB | 3,792 TIA instructions, 428 STL help pages, 56 OBs, state machine pages |
+| PLC General | 9 | 1.8 MB | OMRON CS1 instructions, TwinCAT types/events, IEC 61131 types, OMRON error codes |
+| Robot Controllers | 11 | 4.6 MB | 5-vendor state machines, Yaskawa 3.4 MB pendant alarms, ABB RAPID system, UR blocks |
+| **Total** | **36** | **10.3 MB** | |
+
+These are **data-only building blocks** — not full gym environments. An agent building a gym picks a building block file, uses the state machines for environment states/transitions, fault codes for error scenarios, register maps for protocol emulation.
+
+---
+
 ## 7. Known Gaps (SCRAPER_REQUESTS Status)
 
 | Priority | Request | Status | Detail |
 |----------|---------|--------|--------|
 | P1 | Mitsubishi MELSEC instructions | ❌ No software | Need GX Works2/3 license |
-| P1 | Rockwell RSLogix instructions | ❌ No software | Need Studio 5000 license |
+| P1 | Rockwell RSLogix EDS | ✅ Done | 11,776 EDS files, 24,041 params, 28 families from RSLogix 500 |
+| P1 | Rockwell Studio 5000 | ❌ No software | Need Studio 5000 license for full instruction set |
 | P1 | Beckhoff FB I/O signatures | ⚠️ 0.5% done | Need TwinCAT COM automation to extract typed signatures from .compiled-library-ge33 |
 | P2 | ABB ACS880 Groups 50-58 | ✅ Done | Already in acs880_full_parameters.json (153 fieldbus params) |
 | P2 | ABB ACS880 Group 73 (safety) | ❌ Blocked | Requires live FSO module connection |
 | P2 | SINAMICS p0000-p9999 | ❌ Locked | Real data in 56 CHMs (Help/English.zip) — never extracted |
+| P2 | Yaskawa robots | ✅ Done | 757 models, 1,633 alarms from MotoSim EG-VRC |
 | P2 | Yaskawa GA500/GA700 | ❌ No software | Need DriveWizard Plus |
 | P2 | Danfoss VLT | ❌ No software | Need MCT 10 |
 | P3 | KUKA KRL | ✅ Done | 274 keywords + system vars extracted from DLLs |
@@ -319,7 +339,7 @@ SOTA accuracy on long-tail VFD parameter addresses: **~40%**. Servo drive addres
 | `SiemensSINAMICSEnv` | Actual p0000-p9999 params (locked in CHMs) |
 | `BeckhoffSTEnv` | FB I/O signatures (99.5% lack typed inputs/outputs) |
 | `MitsubishiPLCEnv` | No software license — zero data |
-| `RockwellPLCEnv` | No software license — zero data |
+| `RockwellPLCEnv` | Have RSLogix 500 EDS (24,041 params) but no Studio 5000 |
 
 ---
 
@@ -347,4 +367,13 @@ SOTA accuracy on long-tail VFD parameter addresses: **~40%**. Servo drive addres
 | industrial-gyms | `github.com/canyon-tractian/industrial-gyms` | README + gyms | 260K |
 | public-docs-quarantine | `github.com/canyon-tractian/public-docs-quarantine` | Quarantined | 15M |
 
-**Total proprietary data**: ~13.5 GB across 18 repos (excluding quarantine)
+**Total proprietary data**: ~13.5 GB across 22 repos (excluding quarantine)
+
+### New Repos (Sep 21, 2026)
+| Repo | URL | Contents | Size |
+|------|-----|----------|------|
+| weg-drives-data | `github.com/canyon-tractian/weg-drives-data` | ✅ CLEAN | 281M |
+| rockwell-eds-data | `github.com/canyon-tractian/rockwell-eds-data` | ✅ CLEAN | 78M |
+| yaskawa-data | `github.com/canyon-tractian/yaskawa-data` | ✅ CLEAN | 27M |
+| logo-data | `github.com/canyon-tractian/logo-data` | ✅ CLEAN | 5M |
+| emulator-building-blocks | `github.com/canyon-tractian/emulator-building-blocks` | Building blocks | 10M |
